@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRT WITH AB — Giveaway Spin</title>
+<style>
+:root{ --blue:#2457ff; --ink:#0b0b0f; --line:#e3e7f5; --soft:#f2f4ff; --green:#12b76a; --red:#f04438; }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:Arial,Helvetica,sans-serif;background:#fff;color:var(--ink)}
+.wrap{max-width:520px;margin:0 auto;padding:0 16px 60px}
+
+/* top bar */
+.top{display:flex;align-items:center;justify-content:space-between;padding:16px 4px;border-bottom:1.5px solid var(--line)}
+.logo{font-weight:900;letter-spacing:.12em;font-size:16px}
+.logo span{color:var(--blue)}
+.kl{font-size:10px;font-weight:800;letter-spacing:.12em;padding:6px 12px;border-radius:99px;border:1.5px solid var(--ink);display:flex;align-items:center;gap:7px}
+.kl i{width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(18,183,106,.5)}70%{box-shadow:0 0 0 8px rgba(18,183,106,0)}100%{box-shadow:0 0 0 0 rgba(18,183,106,0)}}
+.kl.locked{border-color:var(--red);color:var(--red)}
+.kl.locked i{background:var(--red);animation:none}
+
+/* hero */
+.hero{text-align:center;padding:34px 0 22px}
+.hero small{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.28em;color:var(--blue);border:1.5px solid var(--blue);border-radius:99px;padding:6px 14px;margin-bottom:14px}
+.hero h1{font-size:clamp(28px,7vw,40px);letter-spacing:-.01em;line-height:1.05}
+.hero h1 b{color:var(--blue)}
+.hero p{color:#6b7280;font-size:13.5px;margin-top:10px;line-height:1.55}
+
+/* countdown */
+.cd{display:flex;justify-content:center;gap:8px;margin-top:20px}
+.cd div{background:var(--ink);color:#fff;border-radius:12px;min-width:64px;padding:10px 6px}
+.cd b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
+.cd span{font-size:8.5px;letter-spacing:.2em;color:#9aa3ff;font-weight:700}
+.cd-live .cd div{background:var(--blue)}
+.cd-label{text-align:center;font-size:10px;font-weight:800;letter-spacing:.24em;color:#8a90a3;margin-top:12px}
+
+/* cards */
+.card{border:1.5px solid var(--line);border-radius:18px;padding:20px;margin-top:18px}
+.card h2{font-size:12px;font-weight:900;letter-spacing:.2em;margin-bottom:4px}
+.card h2 em{font-style:normal;font-size:9px;letter-spacing:.14em;background:var(--soft);color:var(--blue);border-radius:99px;padding:3px 9px;margin-left:6px;vertical-align:2px}
+.card p.tip{font-size:12px;color:#8a90a3;margin-bottom:14px}
+
+input{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;font:inherit;font-size:15px;outline:none}
+input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(36,87,255,.12)}
+.row{display:flex;gap:8px}
+.row input{flex:1}
+.btn{border:none;cursor:pointer;font:inherit;font-weight:800;font-size:12px;letter-spacing:.1em;padding:13px 18px;border-radius:12px;background:var(--blue);color:#fff;transition:.15s;white-space:nowrap}
+.btn:hover{filter:brightness(1.08)}
+.btn:active{transform:scale(.96)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.dark{background:var(--ink)}
+.btn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:#fff}
+.msg{font-size:12.5px;font-weight:700;margin-top:9px;min-height:16px}
+.msg.ok{color:var(--green)}.msg.err{color:var(--red)}
+
+.meta{display:flex;justify-content:space-between;font-size:11.5px;font-weight:700;color:#6b7280;margin:14px 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;max-height:130px;overflow-y:auto}
+.chip{background:var(--soft);border:1px solid var(--line);border-radius:99px;padding:6px 12px;font-size:12.5px;font-weight:600;animation:pop .3s}
+.chip b{color:var(--blue);margin-right:4px}
+.chip button{border:none;background:none;cursor:pointer;color:#9aa0b4;font-size:14px;margin-left:5px}
+.chip button:hover{color:var(--red)}
+@keyframes pop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+.none{color:#a2a8bb;font-size:12.5px}
+
+/* owner */
+.lockbox{border:1.5px dashed #c9cfe3;border-radius:14px;padding:18px;text-align:center}
+.lockbox .ic{width:42px;height:42px;border-radius:12px;background:var(--ink);color:#fff;display:grid;place-items:center;margin:0 auto 10px;font-size:18px}
+.lockbox p{font-size:12px;color:#8a90a3;margin-bottom:12px}
+.lockbox .row{max-width:300px;margin:0 auto}
+.err{color:var(--red);font-size:11.5px;font-weight:700;margin-top:9px;min-height:14px}
+.panel{display:none}
+.panel.on{display:block}
+.ok-badge{display:inline-block;font-size:9.5px;font-weight:900;letter-spacing:.18em;color:var(--green);border:1.5px solid var(--green);border-radius:99px;padding:5px 12px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.grid .btn{font-size:10.5px;padding:12px 8px}
+
+/* wheel */
+.wheel-card{text-align:center}
+.stage{position:relative;width:min(320px,80vw);margin:14px auto 4px}
+canvas{width:100%;display:block}
+.needle{position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;border-top:23px solid var(--ink);z-index:5}
+.hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:62px;height:62px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:10px;font-weight:900;letter-spacing:.14em;border:3px solid #fff;box-shadow:0 6px 18px rgba(11,11,15,.35);z-index:4;pointer-events:none}
+.shield{position:absolute;inset:-4px;border-radius:50%;background:rgba(255,255,255,.75);display:grid;place-items:center;z-index:6;transition:.3s}
+.shield.hide{opacity:0;pointer-events:none}
+.shield b{font-size:11px;letter-spacing:.2em}
+.shield small{display:block;font-size:10px;color:#8a90a3;margin-top:5px}
+.mode{display:inline-flex;background:var(--soft);border-radius:99px;padding:4px;margin-top:12px}
+.mode button{border:none;background:none;cursor:pointer;font:inherit;font-size:10.5px;font-weight:800;letter-spacing:.1em;padding:10px 16px;border-radius:99px;color:#7a8095}
+.mode button.on{background:var(--ink);color:#fff}
+#spinBtn{margin-top:14px;padding:16px 46px;border-radius:99px;font-size:13px}
+.last{margin-top:12px;font-size:12.5px;color:#6b7280;min-height:17px}
+.last b{color:var(--blue)}
+
+/* winner modal */
+.modal{position:fixed;inset:0;z-index:100;background:rgba(11,11,15,.55);display:grid;place-items:center;padding:20px;opacity:0;pointer-events:none;transition:.3s}
+.modal.show{opacity:1;pointer-events:auto}
+.box{background:#fff;border-radius:22px;padding:38px 26px;text-align:center;max-width:400px;width:100%;transform:scale(.85);transition:.4s cubic-bezier(.2,1.4,.3,1)}
+.modal.show .box{transform:scale(1)}
+.box .lbl{font-size:10.5px;font-weight:900;letter-spacing:.3em;color:var(--blue)}
+.box .name{font-size:clamp(34px,9vw,46px);font-weight:900;margin:12px 0 4px;word-break:break-word}
+.box .sub{font-size:12.5px;color:#8a90a3;margin-bottom:22px}
+.box .row{justify-content:center}
+#confetti{position:fixed;inset:0;z-index:99;pointer-events:none}
+
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:99px;font-size:12.5px;font-weight:700;transition:.35s;z-index:120;max-width:90vw;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+footer{text-align:center;padding:28px 16px;color:#9aa0b4;font-size:10.5px;font-weight:700;letter-spacing:.16em}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- TOP -->
+  <div class="top">
+    <div class="logo">CRT <span>WITH AB</span></div>
+    <div class="kl" id="kl"><i></i><span id="klTxt">ENTRIES OPEN</span></div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <small>MEMBERS GIVEAWAY</small>
+    <h1>Write your name.<br>Wait for <b>the spin.</b></h1>
+    <p>Enter before the timer ends. Names save automatically. The owner spins the wheel live — no pre-selected winners.</p>
+    <div class="cd" id="cd">
+      <div><b id="d">—</b><span>DAYS</span></div>
+      <div><b id="h">--</b><span>HRS</span></div>
+      <div><b id="m">--</b><span>MIN</span></div>
+      <div><b id="s">--</b><span>SEC</span></div>
+    </div>
+    <div class="cd-label" id="cdLbl">WAITING FOR RESULT TIME</div>
+  </div>
+
+  <!-- ENTER NAME -->
+  <div class="card">
+    <h2>YOUR NAME <em>MEMBERS</em></h2>
+    <p class="tip">One name per member. Duplicates are blocked.</p>
+    <div class="row">
+      <input type="text" id="nameIn" maxlength="24" placeholder="Type your name…" autocomplete="off">
+      <button class="btn" id="addBtn">ENTER</button>
+    </div>
+    <div class="msg" id="msg"></div>
+    <div class="meta"><span id="count">0 ENTRIES</span><span id="state">OPEN</span></div>
+    <div class="chips" id="chips"><div class="none">No entries yet.</div></div>
+  </div>
+
+  <!-- WHEEL -->
+  <div class="card wheel-card">
+    <h2>THE WHEEL <em>LIVE</em></h2>
+    <div class="stage">
+      <div class="needle"></div>
+      <canvas id="wheel" width="640" height="640"></canvas>
+      <div class="hub">SPIN</div>
+      <div class="shield" id="shield"><div><b>OWNER ONLY</b><small>Unlock with PIN to spin</small></div></div>
+    </div>
+    <div class="mode" id="mode">
+      <button class="on" data-m="1">1 WINNER</button>
+      <button data-m="2">2 WINNERS</button>
+    </div>
+    <br>
+    <button class="btn" id="spinBtn" disabled>SPIN THE WHEEL</button>
+    <div class="last" id="last"></div>
+  </div>
+
+  <!-- OWNER -->
+  <div class="card">
+    <h2>OWNER <em>PRIVATE</em></h2>
+    <p class="tip">Only you: set the time, lock entries, see every name, spin the wheel.</p>
+    <div class="lockbox" id="lockbox">
+      <div class="ic">&#128274;</div>
+      <p>Enter your PIN to unlock the wheel</p>
+      <div class="row">
+        <input type="password" id="pinIn" placeholder="PIN">
+        <button class="btn dark" id="unlockBtn">UNLOCK</button>
+      </div>
+      <div class="err" id="err"></div>
+    </div>
+    <div class="panel" id="panel">
+      <div class="ok-badge">&#10003; OWNER MODE</div>
+      <div class="row">
+        <input type="datetime-local" id="timeIn">
+        <button class="btn" id="setTimeBtn">SET TIME</button>
+      </div>
+      <div class="grid">
+        <button class="btn ghost" id="lockEntriesBtn">LOCK ENTRIES</button>
+        <button class="btn ghost" id="copyBtn">COPY NAMES</button>
+        <button class="btn ghost" id="csvBtn">EXPORT CSV</button>
+        <button class="btn ghost" id="pinBtn">CHANGE PIN</button>
+        <button class="btn ghost" id="clearBtn" style="border-color:var(--red);color:var(--red)">CLEAR ALL</button>
+        <button class="btn ghost" id="lockBtn">LOCK PANEL</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>CRT WITH AB &nbsp;•&nbsp; GIVEAWAY SPIN &nbsp;•&nbsp; MEMBERS ONLY</footer>
+</div>
+
+<!-- WINNER -->
+<div class="modal" id="modal">
+  <div class="box">
+    <div class="lbl" id="wLbl">WINNER</div>
+    <div class="name" id="wName">—</div>
+    <div class="sub" id="wSub">Picked live by the wheel.</div>
+    <div class="row" id="wBtns"></div>
+  </div>
+</div>
+<canvas id="confetti"></canvas>
+<div class="toast" id="toast"></div>
+
+<script>
+var API_URL='/api/state';
+var state={names:[],winners:[],locked:false,time:null};
+var owner=false,ownerPin=null,mode=1,spinning=false,saving=false;
+
+/* toast */
+var tt;function toast(m){var t=document.getElementById('toast');t.textContent=m;t.className='show';clearTimeout(tt);tt=setTimeout(function(){t.className=''},2400)}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function setState(s){state={names:s.names||[],winners:s.winners||[],locked:!!s.locked,time:s.time||null};refresh();renderChips();drawWheel();cdTick()}
+async function apiGet(){var r=await fetch(API_URL,{cache:'no-store'});var s=await r.json().catch(function(){return{}});if(!r.ok)throw new Error(s.error||'load_failed');setState(s)}
+async function apiPost(payload){if(saving)throw new Error('busy');saving=true;try{var r=await fetch(API_URL,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});var s=await r.json().catch(function(){return{}});if(!r.ok){var e=new Error(s.error||'save_failed');e.code=s.error;throw e}setState(s);return s}finally{saving=false}}
+function errText(e){if(e.code==='locked')return'Entries are locked. Wait for the spin.';if(e.code==='duplicate')return'Already entered. One name per member.';if(e.code==='short')return'Name too short.';if(e.code==='wrong_pin')return'Wrong PIN.';if(e.code==='owner_only')return'Owner only.';return'Save failed. Check connection/API.'}
+
+/* countdown */
+function cdTick(){
+  var t=state.time,lbl=document.getElementById('cdLbl'),cd=document.getElementById('cd');
+  function set(id,v){document.getElementById(id).textContent=v}
+  if(!t){lbl.textContent='WAITING FOR RESULT TIME';set('d','—');set('h','--');set('m','--');set('s','--');cd.className='cd';return}
+  var diff=new Date(t).getTime()-Date.now();
+  if(diff<=0){lbl.textContent='RESULT TIME — LIVE NOW';cd.className='cd cd-live';set('d','00');set('h','00');set('m','00');set('s','00');return}
+  cd.className='cd';lbl.textContent='RESULT IN';
+  set('d',Math.floor(diff/864e5));
+  set('h',String(Math.floor(diff/36e5)%24).padStart(2,'0'));
+  set('m',String(Math.floor(diff/6e4)%60).padStart(2,'0'));
+  set('s',String(Math.floor(diff/1e3)%60).padStart(2,'0'));
+}
+setInterval(cdTick,1000);cdTick();
+
+/* state */
+function refresh(){
+  var kl=document.getElementById('kl');
+  document.getElementById('state').textContent=state.locked?'LOCKED':'OPEN';
+  document.getElementById('state').style.color=state.locked?'var(--red)':'var(--green)';
+  if(state.locked){kl.className='kl locked';document.getElementById('klTxt').textContent='ENTRIES LOCKED';
+    document.getElementById('addBtn').disabled=true;document.getElementById('nameIn').disabled=true;
+    document.getElementById('nameIn').placeholder='Entries locked by owner';
+    document.getElementById('lockEntriesBtn').textContent='OPEN ENTRIES';
+  }else{kl.className='kl';document.getElementById('klTxt').textContent='ENTRIES OPEN';
+    document.getElementById('addBtn').disabled=false;document.getElementById('nameIn').disabled=false;
+    document.getElementById('nameIn').placeholder='Type your name…';
+    document.getElementById('lockEntriesBtn').textContent='LOCK ENTRIES';
+  }
+  document.getElementById('count').textContent=state.names.length+(state.names.length===1?' ENTRY':' ENTRIES');
+  document.getElementById('last').innerHTML=state.winners.length?'LAST WINNERS: '+state.winners.map(function(w){return'<b>'+esc(w)+'</b>'}).join(' • '):'';
+}
+
+/* chips */
+function renderChips(){
+  var box=document.getElementById('chips');
+  if(!state.names.length){box.innerHTML='<div class="none">No entries yet.</div>';return}
+  box.innerHTML=state.names.map(function(n,i){
+    return '<span class="chip"><b>'+(i+1)+'</b>'+esc(n)+(owner?'<button data-name="'+esc(n)+'">&times;</button>':'')+'</span>'
+  }).join('');
+  var btns=box.querySelectorAll('button');
+  for(var i=0;i<btns.length;i++)btns[i].onclick=function(){removeName(this.dataset.name)};
+}
+async function removeName(name){if(!owner)return;try{await apiPost({action:'remove',name:name,pin:ownerPin})}catch(e){toast(errText(e))}}
+
+/* add name */
+async function addName(){
+  var msg=document.getElementById('msg');
+  if(state.locked){msg.className='msg err';msg.textContent='Entries are locked. Wait for the spin.';return}
+  var v=document.getElementById('nameIn').value.trim().replace(/\s+/g,' ');
+  if(v.length<2){msg.className='msg err';msg.textContent=v?'Name too short.':'Write your name first.';return}
+  try{
+    await apiPost({action:'add',name:v});
+    document.getElementById('nameIn').value='';
+    msg.className='msg ok';msg.textContent='Saved. You are in the draw.';
+    setTimeout(function(){msg.textContent=''},2200);
+  }catch(e){msg.className='msg err';msg.textContent=errText(e)}
+}
+document.getElementById('addBtn').onclick=addName;
+document.getElementById('nameIn').addEventListener('keydown',function(e){if(e.key==='Enter')addName()});
+
+/* wheel */
+var cv=document.getElementById('wheel'),cx=cv.getContext('2d');
+var S=cv.width,C=S/2,R=C-8,rot=0,list=[];
+var COLORS=['#2457ff','#0b0b0f','#7c9bff','#0b0b0f'];
+function buildList(){
+  var MAX=12;
+  if(!state.names.length){list=[];return}
+  if(state.names.length<=MAX){list=state.names.slice();return}
+  var sh=state.names.slice().sort(function(){return Math.random()-.5});
+  list=sh.slice(0,MAX);
+}
+function drawWheel(){
+  if(!spinning)buildList();
+  cx.clearRect(0,0,S,S);
+  var n=list.length;
+  if(!n){
+    cx.beginPath();cx.arc(C,C,R,0,7);cx.fillStyle='#f2f4ff';cx.fill();
+    cx.lineWidth=8;cx.strokeStyle='#e3e7f5';cx.stroke();
+    cx.fillStyle='#a2a8bb';cx.font='700 24px Arial';cx.textAlign='center';cx.textBaseline='middle';
+    cx.fillText('WAITING FOR ENTRIES',C,C);return;
+  }
+  var seg=Math.PI*2/n;
+  for(var i=0;i<n;i++){
+    var a0=rot+i*seg,a1=a0+seg;
+    cx.beginPath();cx.moveTo(C,C);cx.arc(C,C,R,a0,a1);cx.closePath();
+    cx.fillStyle=COLORS[i%4];cx.fill();
+    cx.lineWidth=2.5;cx.strokeStyle='#fff';cx.stroke();
+    cx.save();cx.translate(C,C);cx.rotate(a0+seg/2);
+    cx.textAlign='right';cx.textBaseline='middle';
+    var fs=Math.max(13,Math.min(22,(R*seg)/Math.max(4,list[i].length)*1.5));
+    cx.font='800 '+fs+'px Arial';cx.fillStyle='#fff';
+    cx.fillText(list[i].toUpperCase().slice(0,14),R-20,0);
+    cx.restore();
+  }
+  cx.beginPath();cx.arc(C,C,R,0,7);cx.lineWidth=9;cx.strokeStyle='#0b0b0f';cx.stroke();
+  for(var j=0;j<n;j++){
+    var a=rot+j*seg;
+    cx.beginPath();cx.arc(C+Math.cos(a)*R,C+Math.sin(a)*R,7,0,7);
+    cx.fillStyle='#fff';cx.fill();cx.lineWidth=2.5;cx.strokeStyle='#0b0b0f';cx.stroke();
+  }
+}
+drawWheel();
+
+/* spin */
+function ease(t){return 1-Math.pow(1-t,4)}
+var actx=null;
+function tick(){
+  try{
+    if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();
+    var o=actx.createOscillator(),g=actx.createGain();
+    o.type='triangle';o.frequency.value=880;
+    g.gain.setValueAtTime(.05,actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.0001,actx.currentTime+.05);
+    o.connect(g);g.connect(actx.destination);o.start();o.stop(actx.currentTime+.06);
+  }catch(e){}
+}
+function spinOnce(){
+  return new Promise(function(res){
+    var n=list.length;
+    if(!n){toast('No names on the wheel.');res(null);return}
+    spinning=true;document.getElementById('spinBtn').disabled=true;
+    var seg=Math.PI*2/n;
+    var idx=Math.floor(Math.random()*n);
+    var cur=((rot%(Math.PI*2))+Math.PI*2)%(Math.PI*2);
+    var tgt=(Math.PI*1.5)-(idx*seg+seg/2);
+    var dm=((tgt-cur)%(Math.PI*2)+Math.PI*2)%(Math.PI*2);
+    var total=rot+Math.PI*2*(5+Math.floor(Math.random()*3))+dm;
+    var dur=4500,from=rot,start=performance.now(),last=-1;
+    (function fr(now){
+      var p=Math.min(1,(now-start)/dur);
+      rot=from+(total-from)*ease(p);
+      drawWheel();
+      var peg=Math.floor(rot/seg);
+      if(peg!==last){last=peg;tick()}
+      if(p<1)requestAnimationFrame(fr);
+      else{spinning=false;res(list[idx])}
+    })(start);
+  });
+}
+
+/* confetti */
+var cc=document.getElementById('confetti'),c2=cc.getContext('2d'),raf=null;
+function cSize(){cc.width=innerWidth;cc.height=innerHeight}
+addEventListener('resize',cSize);cSize();
+function boom(){
+  var cols=['#2457ff','#7c9bff','#0b0b0f','#ffd84d','#fff'];
+  var ps=[];for(var i=0;i<140;i++)ps.push({
+    x:innerWidth/2+(Math.random()-.5)*200,y:innerHeight*.35,
+    vx:(Math.random()-.5)*15,vy:-Math.random()*14-4,
+    w:5+Math.random()*6,h:7+Math.random()*7,
+    c:cols[i%5],r:Math.random()*6,vr:(Math.random()-.5)*.3});
+  var st=performance.now();cancelAnimationFrame(raf);
+  (function fr(now){
+    var t=now-st;c2.clearRect(0,0,cc.width,cc.height);var alive=false;
+    for(var i=0;i<ps.length;i++){var p=ps[i];
+      p.vy+=.35;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.vx*=.99;
+      if(p.y<innerHeight+40)alive=true;
+      c2.save();c2.translate(p.x,p.y);c2.rotate(p.r);
+      c2.globalAlpha=Math.max(0,1-t/3000);c2.fillStyle=p.c;
+      c2.fillRect(-p.w/2,-p.h/2,p.w,p.h);c2.restore();
+    }
+    if(alive&&t<3200)raf=requestAnimationFrame(fr);else c2.clearRect(0,0,cc.width,cc.height);
+  })(st);
+}
+
+/* winner modal */
+function showWin(name,lbl,sub,btns){
+  document.getElementById('wLbl').textContent=lbl;
+  document.getElementById('wName').textContent=name;
+  document.getElementById('wSub').textContent=sub;
+  var box=document.getElementById('wBtns');box.innerHTML='';
+  btns.forEach(function(b){
+    var el=document.createElement('button');
+    el.className='btn'+(b.ghost?' ghost':'');el.textContent=b.t;el.onclick=b.f;
+    box.appendChild(el);
+  });
+  document.getElementById('modal').className='modal show';
+  boom();
+}
+function closeM(){document.getElementById('modal').className='modal'}
+
+function removeWinner(w){
+  if(!owner)return Promise.resolve();
+  return apiPost({action:'winner',name:w,pin:ownerPin}).catch(function(e){toast(errText(e))});
+}
+
+function doSpin(){
+  if(spinning)return;
+  if(!state.names.length){toast('No entries yet.');return}
+  closeM();
+  if(mode===1){
+    spinOnce().then(function(w){
+      if(!w)return;
+      removeWinner(w).finally(function(){document.getElementById('spinBtn').disabled=false});
+      showWin(w.toUpperCase(),'WINNER','Picked live by the wheel.',[
+        {t:'SPIN AGAIN',f:function(){closeM();setTimeout(doSpin,300)}},
+        {t:'CLOSE',ghost:true,f:closeM}
+      ]);
+    });
+  }else{
+    spinOnce().then(function(w1){
+      if(!w1){document.getElementById('spinBtn').disabled=false;return}
+      removeWinner(w1);
+      showWin(w1.toUpperCase(),'WINNER 1 OF 2','Now spin once more for winner 2.',[
+        {t:'SPIN FOR WINNER 2',f:function(){
+          closeM();
+          if(!state.names.length){document.getElementById('spinBtn').disabled=false;
+            showWin(w1.toUpperCase(),'WINNER','Only one name was on the wheel.',[{t:'CLOSE',ghost:true,f:closeM}]);return}
+          spinOnce().then(function(w2){
+            document.getElementById('spinBtn').disabled=false;
+            if(!w2)return;
+            removeWinner(w2);
+            showWin(w2.toUpperCase(),'WINNER 2 OF 2','Both winners picked live: '+w1+' & '+w2+'.',[
+              {t:'DONE',ghost:true,f:closeM}]);
+          });
+        }},
+        {t:'STOP HERE',ghost:true,f:function(){closeM();document.getElementById('spinBtn').disabled=false}}
+      ]);
+    });
+  }
+}
+document.getElementById('spinBtn').onclick=doSpin;
+
+/* mode */
+var mbtns=document.querySelectorAll('#mode button');
+for(var i=0;i<mbtns.length;i++)mbtns[i].onclick=function(){
+  for(var j=0;j<mbtns.length;j++)mbtns[j].className='';
+  this.className='on';mode=+this.dataset.m;
+  toast(mode===1?'Mode: 1 winner':'Mode: 2 winners — spins twice');
+};
+
+/* owner */
+function setOwner(on){
+  owner=on;
+  if(!on)ownerPin=null;
+  document.getElementById('panel').className=on?'panel on':'panel';
+  document.getElementById('shield').className=on?'shield hide':'shield';
+  document.getElementById('spinBtn').disabled=!on||spinning;
+  renderChips();
+  if(on&&state.time){var d=new Date(state.time);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());
+    document.getElementById('timeIn').value=d.toISOString().slice(0,16)}
+}
+document.getElementById('unlockBtn').onclick=async function(){
+  var v=document.getElementById('pinIn').value;
+  try{
+    var r=await fetch(API_URL,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action:'unlock',pin:v})});
+    var s=await r.json().catch(function(){return{}});
+    if(!r.ok)throw new Error(s.error||'wrong_pin');
+    ownerPin=v;setState(s.state);setOwner(true);toast('Owner mode unlocked.');
+    document.getElementById('pinIn').value='';document.getElementById('err').textContent='';
+  }catch(e){
+    document.getElementById('err').textContent='Wrong PIN.';document.getElementById('pinIn').value='';
+  }
+};
+document.getElementById('pinIn').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('unlockBtn').click()});
+document.getElementById('lockBtn').onclick=function(){setOwner(false);toast('Locked.')};
+document.getElementById('pinBtn').onclick=async function(){
+  var p=prompt('New PIN (min 4 characters):','');
+  if(p&&p.trim().length>=4){try{await apiPost({action:'set_pin',pin:ownerPin,newPin:p.trim()});ownerPin=p.trim();toast('PIN changed.')}catch(e){toast(errText(e))}}
+  else if(p!==null)toast('PIN must be 4+ characters.');
+};
+document.getElementById('setTimeBtn').onclick=async function(){
+  var v=document.getElementById('timeIn').value;
+  if(!v){toast('Pick a date and time.');return}
+  try{await apiPost({action:'set_time',pin:ownerPin,time:new Date(v).getTime()});toast('Result time set.')}catch(e){toast(errText(e))}
+};
+document.getElementById('lockEntriesBtn').onclick=async function(){
+  try{var s=await apiPost({action:'set_lock',pin:ownerPin,locked:!state.locked});toast(s.locked?'Entries locked.':'Entries open.')}catch(e){toast(errText(e))}
+};
+document.getElementById('copyBtn').onclick=function(){
+  if(!state.names.length){toast('No names yet.');return}
+  var txt=state.names.map(function(n,i){return(i+1)+'. '+n}).join('\n');
+  if(navigator.clipboard)navigator.clipboard.writeText(txt).then(function(){toast('All names copied.')},function(){prompt('Copy:',txt)});
+  else prompt('Copy:',txt);
+};
+document.getElementById('csvBtn').onclick=function(){
+  if(!state.names.length){toast('No names yet.');return}
+  var csv='Number,Name\n'+state.names.map(function(n,i){return(i+1)+',"'+n.replace(/"/g,'""')+'"'}).join('\n');
+  var b=new Blob([csv],{type:'text/csv'}),a=document.createElement('a');
+  a.href=URL.createObjectURL(b);a.download='giveaway-names.csv';a.click();
+  URL.revokeObjectURL(a.href);toast('CSV downloaded.');
+};
+document.getElementById('clearBtn').onclick=async function(){
+  if(!confirm('Delete all names, winners and time?'))return;
+  try{await apiPost({action:'clear',pin:ownerPin});toast('Cleared.')}catch(e){toast(errText(e))}
+};
+
+/* boot + live refresh */
+apiGet().catch(function(e){toast('Could not load shared entries.')});
+setInterval(function(){if(!saving)apiGet().catch(function(){})},5000);
+</script>
+</body>
+</html>
